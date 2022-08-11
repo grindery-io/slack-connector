@@ -1,0 +1,1 @@
+web: daphne slack_connector.asgi:application --port $PORT --bind 0.0.0.0 -v2

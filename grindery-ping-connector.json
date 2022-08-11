@@ -1,0 +1,50 @@
+{
+  "key": "grinderyPingConnector",
+  "name": "GrinderyPingConnector",
+  "version": "1.0.0",
+  "platformVersion": "1.0.0",
+  "actions": [
+    {
+      "key": "grinderyPingConnector",
+      "name": "Send Push Notification",
+      "display": {
+        "label": "Send Push Notification",
+        "description": "Send Push Notification"
+      },
+      "operation": {
+        "type": "api",
+        "operation": {
+          "url": "https://grindery-ping-connector.herokuapp.com/fcm-sender/"
+        },
+        "inputFields": [
+          {
+            "key": "title",
+            "label": "Notification title",
+            "type": "string",
+            "required": false,
+            "placeholder": "Enter optional title"
+          },
+          {
+            "key": "body",
+            "label": "Notification text",
+            "type": "string",
+            "required": true,
+            "placeholder": "Enter notification text"
+          },
+          {
+            "key": "tokens",
+            "label": "FCM tokens",
+            "type": "array",
+            "required": true,
+            "placeholder": ""
+          }
+        ],
+        "outputFields": [
+        ]
+      }
+    }
+  ],
+  "authentication": {
+  },
+  "icon": ""
+}
