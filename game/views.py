@@ -59,6 +59,14 @@ class FetchChannelList(GenericAPIView):
                                 "required": True,
                                 "placeholder": "Pick a channel...",
                                 "choices": channels
+                            },
+                            {
+                                "key": "message",
+                                "label": "Message Text",
+                                "helpText": "",
+                                "type": "string",
+                                "required": True,
+                                "placeholder": "Enter text"
                             }
                         ]
                     }
