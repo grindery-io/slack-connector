@@ -52,7 +52,7 @@ class FetchChannelList(GenericAPIView):
                     "result": {
                         "inputFields": [
                             {
-                                "key": "channel",
+                                "key": "channel_id",
                                 "label": "Channel",
                                 "helpText": "",
                                 "type": "string",

@@ -21,6 +21,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None, **kwargs):
         request = json.loads(text_data)
+        print('----------', request)
         method = request.get("method", None)
         params = request.get("params", None)
         id = request.get("id", None)
@@ -64,6 +65,9 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             logger = logging.getLogger(__name__)
 
             try:
+                client.conversations_join(
+                    channel=channel_id
+                )
                 result = client.chat_postMessage(
                     channel=channel_id,
                     text=message
@@ -75,7 +79,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                     error_message = result["error"]
             except SlackApiError as e:
                 success = False
-                error_message = e
+                error_message = 'invalid request'
             if success:
                 run_action_response = {
                     'jsonrpc': '2.0',
