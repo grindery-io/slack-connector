@@ -1,3 +1,3 @@
-# grindery_ping_connector
+# grindery_slack_connector
 
-Grindery Ping Connector
+Grindery Slack Connector
