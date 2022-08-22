@@ -45,8 +45,14 @@ class FetchChannelList(GenericAPIView):
                         channels.append({
                             **serialize_channel(channel)
                         })
-                    if result["response_metadata"]["next_cursor"]:
-                        cursor = result["response_metadata"]["next_cursor"]
+                    if "response_metadata" in result:
+                        if "next_cursor" in result["response_metadata"]:
+                            if result["response_metadata"]["next_cursor"]:
+                                cursor = result["response_metadata"]["next_cursor"]
+                            else:
+                                cursor = None
+                        else:
+                            cursor = None
                     else:
                         cursor = None
                 else:
