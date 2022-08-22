@@ -47,7 +47,8 @@ class FetchChannelList(GenericAPIView):
                         })
                     if result["response_metadata"]["next_cursor"]:
                         cursor = result["response_metadata"]["next_cursor"]
-
+                    else:
+                        cursor = None
                 else:
                     success = False
                     cursor = None
