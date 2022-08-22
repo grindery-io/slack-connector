@@ -25,21 +25,33 @@ class FetchChannelList(GenericAPIView):
         client = WebClient(token=access_token)
         error_message = ''
         channels = []
+        cursor = 'initial value'
+        success = True
 
         try:
-            result = client.conversations_list(
-                limit=1000
-            )
-            if result["ok"]:
-                success = True
-                for channel in result["channels"]:
-                    channels.append({
-                        **serialize_channel(channel)
-                    })
+            while cursor:
+                if cursor == 'initial value':
+                    result = client.conversations_list(
+                        limit=1000
+                    )
+                else:
+                    result = client.conversations_list(
+                        limit=1000,
+                        cursor=cursor
+                    )
+                if result["ok"]:
+                    success = True
+                    for channel in result["channels"]:
+                        channels.append({
+                            **serialize_channel(channel)
+                        })
+                    if result["response_metadata"]["next_cursor"]:
+                        cursor = result["response_metadata"]["next_cursor"]
 
-            else:
-                success = False
-                error_message = result["error"]
+                else:
+                    success = False
+                    cursor = None
+                    error_message = result["error"]
         except SlackApiError as e:
             success = False
             error_message = 'invalid request'
