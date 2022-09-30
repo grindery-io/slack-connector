@@ -31,6 +31,7 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                 'id': id
             }
             await self.send_json(response)
+            return
 
         params = request.get("params", None)
         id = request.get("id", None)
