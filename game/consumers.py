@@ -24,6 +24,8 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
     async def receive(self, text_data=None, bytes_data=None, **kwargs):
         request = json.loads(text_data)
         method = request.get("method", None)
+        params = request.get("params", None)
+        id = request.get("id", None)
         if method == 'ping':
             response = {
                 'jsonrpc': '2.0',
@@ -33,8 +35,6 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
             await self.send_json(response)
             return
 
-        params = request.get("params", None)
-        id = request.get("id", None)
         key = ''
         fields = ''
         session_id = ''
