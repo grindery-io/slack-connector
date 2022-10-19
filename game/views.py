@@ -8,6 +8,8 @@ from slack_sdk.errors import SlackApiError
 from .serializers import ConnectorSerializer
 from common.serializers import serialize_channel
 
+from .request_prefix import REQUEST_PREFIX
+
 
 class FetchChannelList(GenericAPIView):
     serializer_class = ConnectorSerializer
@@ -20,9 +22,9 @@ class FetchChannelList(GenericAPIView):
         method = serializer.data.get('method')
         request_id = serializer.data.get('id')
         key = params['key']
-        access_token = params['credentials']['access_token']
+        access_token = params['authentication']
 
-        client = WebClient(token=access_token)
+        client = WebClient(token=access_token, base_url=REQUEST_PREFIX + 'www.slack.com/api/')
         error_message = ''
         channels = []
         cursor = 'initial value'

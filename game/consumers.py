@@ -4,6 +4,8 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
+from .request_prefix import REQUEST_PREFIX
+
 
 class SocketAdapter(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
@@ -24,11 +26,19 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
         method = request.get("method", None)
         params = request.get("params", None)
         id = request.get("id", None)
+        if method == 'ping':
+            response = {
+                'jsonrpc': '2.0',
+                'result': {},
+                'id': id
+            }
+            await self.send_json(response)
+            return
+
         key = ''
         fields = ''
         session_id = ''
         access_token = ''
-        refresh_token = ''
         channel_id = ''
         message = ''
 
@@ -37,30 +47,17 @@ class SocketAdapter(AsyncJsonWebsocketConsumer):
                 key = params['key']
             if 'sessionId' in params:
                 session_id = params['sessionId']
-            if 'credentials' in params:
-                credentials = params['credentials']
-                if 'access_token' in credentials:
-                    access_token = credentials['access_token']
-                if 'refresh_token' in credentials:
-                    refresh_token = credentials['refresh_token']
             if 'fields' in params:
                 fields = params['fields']
                 if 'channel_id' in fields:
                     channel_id = fields['channel_id']
                 if 'message' in fields:
                     message = str(fields['message'])
-
-        if method == 'ping':
-            response = {
-                'jsonrpc': '2.0',
-                'result': {},
-                'id': id
-            }
-            await self.send_json(response)
+            access_token = params['authentication']
 
         if method == 'runAction':
             error_message = ''
-            client = WebClient(token=access_token)
+            client = WebClient(token=access_token, base_url=REQUEST_PREFIX + 'www.slack.com/api/')
             logger = logging.getLogger(__name__)
 
             try:
