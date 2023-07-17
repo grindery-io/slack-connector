@@ -1,14 +1,14 @@
 import json
+import os
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
-
 from .serializers import ConnectorSerializer
 from common.serializers import serialize_channel
 
-from .request_prefix import REQUEST_PREFIX
+request_prefix = os.environ["CREDENTIAL_MANAGER_REQUEST_PREFIX"]
 
 
 class FetchChannelList(GenericAPIView):
@@ -23,8 +23,10 @@ class FetchChannelList(GenericAPIView):
         request_id = serializer.data.get('id')
         key = params['key']
         access_token = params['authentication']
+        cdsName = params['cdsName']
+        baseUrl = request_prefix.replace('$CDS_NAME', cdsName)
 
-        client = WebClient(token=access_token, base_url=REQUEST_PREFIX + 'www.slack.com/api/')
+        client = WebClient(token=access_token, base_url=baseUrl + 'www.slack.com/api/')
         error_message = ''
         channels = []
         cursor = 'initial value'
