@@ -21,9 +21,9 @@ class FetchChannelList(GenericAPIView):
         params = serializer.data.get('params')
         method = serializer.data.get('method')
         request_id = serializer.data.get('id')
+        cdsName = serializer.data.get('cdsName')
         key = params['key']
         access_token = params['authentication']
-        cdsName = params['cdsName']
         baseUrl = request_prefix.replace('$CDS_NAME', cdsName)
 
         client = WebClient(token=access_token, base_url=baseUrl + 'www.slack.com/api/')
