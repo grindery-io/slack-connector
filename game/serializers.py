@@ -5,6 +5,7 @@ from rest_framework import serializers
 class ParamSerializer(serializers.Serializer):
     key = serializers.CharField(required=False)
     authentication = serializers.CharField(required=False)
+    cdsName = serializers.CharField(required=False)
 
     class Meta:
         fields = ("key", "fieldData", "authentication")
