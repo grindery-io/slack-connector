@@ -21,7 +21,7 @@ class FetchChannelList(GenericAPIView):
         params = serializer.data.get('params')
         method = serializer.data.get('method')
         request_id = serializer.data.get('id')
-        cdsName = serializer.data.get('cdsName')
+        cdsName = params['cdsName']
         key = params['key']
         access_token = params['authentication']
         baseUrl = request_prefix.replace('$CDS_NAME', cdsName)
